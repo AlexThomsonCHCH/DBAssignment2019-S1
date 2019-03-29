@@ -1,0 +1,222 @@
+<html><head>
+<title>Schema Report for database: AMSTestData</title>
+<style>
+        td,th {
+        text-align:left;
+        vertical-align:middle;
+        }
+        table {
+        border-collapse: collapse;
+        border: 1px solid;
+        }
+        caption, th, td {
+        padding: .2em .8em;
+        border: 1px solid #000000;
+        }
+        caption {
+        background: #D3D3D3;
+        font-weight: bold;
+        font-size: 1.1em;
+        }
+        th {
+        font-weight: bold;
+        background: #000000;
+        color: white;
+        }
+        td {
+        background: #FFFFFF;
+        }
+        </style>
+      </head>
+     <body>
+<h1>Schema Report for database: AMSTestData</h1>
+<a id="home">Table List </a><br /><ul>
+<li><a href="#Job">Job </a></li>
+<li><a href="#Installer">Installer </a></li>
+<li><a href="#Meter">Meter </a></li>
+<li><a href="#Test">Test </a></li>
+<li><a href="#Test Equipment">Test Equipment </a></li>
+<li><a href="#Network">Network </a></li>
+<li><a href="#Antenna">Antenna </a></li>
+<li><a href="#Signal Type">Signal Type </a></li>
+<li><a href="#Results">Results </a></li>
+<li><a href="#Signal Results">Signal Results </a></li>
+</ul>
+<a id="Job"></a><table style="width:100%"><caption>Table: Job </caption>
+<tr><td>Table Comments</td><td colspan="6">This is the root table of the database. All tests conducted are a result of a workorder. As Primary Keys should be Unique, it has been split out into a seperate table</td></tr>
+<tr><td colspan="7">Columns</td></tr>
+        <tr>
+        <th>Name</th>
+        <th>Data Type</th>
+        <th>Nullable</th>
+        <th>PK</th>
+        <th>FK</th>
+        <th>Default</th>
+        <th>Comment</th>
+        </tr>
+<tr><td>workOrder</td><td>CHAR(11)</td><td>Yes</td><td>Yes</td><td>No</td><td></td><td>This is the Unique Identifier for the WorkOrder/Job. This is split out from the rest as there may be multiple tests for the same Job/Installation</td></tr>
+</table><a href="#home">Table List </a></br>
+<a id="Installer"></a><table style="width:100%"><caption>Table: Installer </caption>
+<tr><td>Table Comments</td><td colspan="6">This Table Sits in Regard to Employee Details</td></tr>
+<tr><td colspan="7">Columns</td></tr>
+        <tr>
+        <th>Name</th>
+        <th>Data Type</th>
+        <th>Nullable</th>
+        <th>PK</th>
+        <th>FK</th>
+        <th>Default</th>
+        <th>Comment</th>
+        </tr>
+<tr><td>employeeID</td><td>INT</td><td>Yes</td><td>Yes</td><td>No</td><td></td><td>This is the Unique Identifier for an Employee. This is split out from the test tab;e as there may be multiple tests for the same employee (they may work on multiple jobs/test)</td></tr>
+<tr><td>userName</td><td>VARCHAR(25)</td><td>Yes</td><td>No</td><td>No</td><td></td><td>All testing staff must have a username that is used to identify them when the log files come through</td></tr>
+</table><a href="#home">Table List </a></br>
+<a id="Meter"></a><table style="width:100%"><caption>Table: Meter </caption>
+<tr><td>Table Comments</td><td colspan="6">These Are Attributes of the Meters </td></tr>
+<tr><td colspan="7">Columns</td></tr>
+        <tr>
+        <th>Name</th>
+        <th>Data Type</th>
+        <th>Nullable</th>
+        <th>PK</th>
+        <th>FK</th>
+        <th>Default</th>
+        <th>Comment</th>
+        </tr>
+<tr><td>meterID</td><td>INT</td><td>Yes</td><td>Yes</td><td>No</td><td></td><td>This is the Unique Identifier for the Meter. This is split out from the rest as there may be multiple tests for the same meter.</td></tr>
+<tr><td>bluetoothName</td><td>VARCHAR(25)</td><td>Yes</td><td>No</td><td>No</td><td></td><td>This is the bluetooth hostname of the meter. Every bluetooth requires a hostname (hence NN). I went for a value of 25 for the hostname to allow for redundancy in case of duplicates (should be unique)</td></tr>
+<tr><td>gpsLong</td><td>DECIMAL(20,17)</td><td>No</td><td>No</td><td>No</td><td></td><td>Longitude of the Meter according to GPS. Set to decimal to allow for precision, with up to 3 places pre-point for degrees, and the rest for precise accuracy of location</td></tr>
+<tr><td>gpsLat</td><td>DECIMAL(20,17)</td><td>No</td><td>No</td><td>No</td><td></td><td>lattitude of the Meter according to GPS. Set to decimal to allow for precision, with up to 3 places pre-point for degrees, and the rest for precise accuracy of location</td></tr>
+<tr><td>gpsAccuracy</td><td>VARCHAR(30)</td><td>No</td><td>No</td><td>No</td><td>'kCLLocationAccuracyKilometer'</td><td>Normally set to kCLLocationAccuracyKilometer</td></tr>
+<tr><td>serialNumber</td><td>CHAR(8)</td><td>Yes</td><td>No</td><td>No</td><td></td><td>Manafacturers serial code for the meter. Every single meter must have one, and it must be unique. Require 8 places due to standard device template serial number</td></tr>
+<tr><td>modemType</td><td>VARCHAR(7)</td><td>No</td><td>No</td><td>No</td><td></td><td>This is the modem type that was used for this testing.</td></tr>
+<tr><td>firmwareVersion</td><td>CHAR(8)</td><td>No</td><td>No</td><td>No</td><td></td><td>This is the firmware version of the meter. </td></tr>
+</table><a href="#home">Table List </a></br>
+<a id="Test"></a><table style="width:100%"><caption>Table: Test </caption>
+<tr><td>Table Comments</td><td colspan="6">This table contains details of the test and links to the signal results table</td></tr>
+<tr><td colspan="7">Columns</td></tr>
+        <tr>
+        <th>Name</th>
+        <th>Data Type</th>
+        <th>Nullable</th>
+        <th>PK</th>
+        <th>FK</th>
+        <th>Default</th>
+        <th>Comment</th>
+        </tr>
+<tr><td>testID</td><td>INT</td><td>Yes</td><td>Yes</td><td>No</td><td></td><td>This is the Unique Identifier for the Test. This is a Unique value</td></tr>
+<tr><td>workOrder</td><td>CHAR(11)</td><td>Yes</td><td>No</td><td>Yes</td><td></td><td>This is the foreign Key Relating to the Job</td></tr>
+<tr><td>meterID</td><td>INT</td><td>Yes</td><td>No</td><td>Yes</td><td></td><td>This is the foreign Key Relating to the Meter used in the test</td></tr>
+<tr><td>employeeID</td><td>INT</td><td>Yes</td><td>No</td><td>Yes</td><td></td><td>This is the foreign Key Relating to the employee used in the test</td></tr>
+<tr><td>testerID</td><td>INT</td><td>Yes</td><td>No</td><td>Yes</td><td></td><td>This is the foreign Key Relating to the tablet used in the test</td></tr>
+<tr><td>date</td><td>DATETIME</td><td>Yes</td><td>No</td><td>No</td><td></td><td>Date and Time of the Test</td></tr>
+<tr><td>testType</td><td>VARCHAR(10)</td><td>No</td><td>No</td><td>No</td><td>'production'</td><td>production or test?</td></tr>
+<tr><td>antennaTestType</td><td>VARCHAR(17)</td><td>Yes</td><td>No</td><td>No</td><td></td><td>This data field confirms what antenna test type it is. </td></tr>
+<tr><td>batteryLevel</td><td>DECIMAL(4,2)</td><td>No</td><td>No</td><td>No</td><td></td><td>This field indicates the level of battery the meter has at the time of testing.</td></tr>
+<tr><td>bluetoothSignal</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td></td><td>This indicates the level of bluetooth signal the Meter has to the Tablet at the test time</td></tr>
+<tr><td>gen</td><td>INT</td><td>Yes</td><td>No</td><td>No</td><td></td><td>The generation of test it is</td></tr>
+</table><a href="#home">Table List </a></br>
+<a id="Test Equipment"></a><table style="width:100%"><caption>Table: Test Equipment </caption>
+<tr><td>Table Comments</td><td colspan="6">This contains details of the tablet (Ipads) used to test the modem</td></tr>
+<tr><td colspan="7">Columns</td></tr>
+        <tr>
+        <th>Name</th>
+        <th>Data Type</th>
+        <th>Nullable</th>
+        <th>PK</th>
+        <th>FK</th>
+        <th>Default</th>
+        <th>Comment</th>
+        </tr>
+<tr><td>testerID</td><td>INT</td><td>Yes</td><td>Yes</td><td>No</td><td></td><td>This is the Unique Identifier for the test tablet. This may be used for multiple tests of different meters</td></tr>
+<tr><td>appVersion</td><td>CHAR(5)</td><td>No</td><td>No</td><td>No</td><td></td><td>This is the version number of the App on the tablet. Char is used to void truncation of values and for accuracy of input</td></tr>
+<tr><td>deviceType</td><td>VARCHAR(20)</td><td>No</td><td>No</td><td>No</td><td></td><td>This is used to describe the type of tablet used for the test. </td></tr>
+</table><a href="#home">Table List </a></br>
+<a id="Network"></a><table style="width:100%"><caption>Table: Network </caption>
+<tr><td>Table Comments</td><td colspan="6">This contains details and attributes about the different network providers the signal tests for.</td></tr>
+<tr><td colspan="7">Columns</td></tr>
+        <tr>
+        <th>Name</th>
+        <th>Data Type</th>
+        <th>Nullable</th>
+        <th>PK</th>
+        <th>FK</th>
+        <th>Default</th>
+        <th>Comment</th>
+        </tr>
+<tr><td>networkID</td><td>INT</td><td>Yes</td><td>Yes</td><td>No</td><td></td><td>This is the Unique Identifier for the network. This is split out from the rest as there may be multiple tests for the same network</td></tr>
+<tr><td>networkName</td><td>VARCHAR(10)</td><td>No</td><td>No</td><td>No</td><td></td><td>This is the name of the network provider. </td></tr>
+</table><a href="#home">Table List </a></br>
+<a id="Antenna"></a><table style="width:100%"><caption>Table: Antenna </caption>
+<tr><td>Table Comments</td><td colspan="6">This table contains attributes about the different antennas used to pick up signal for the meters.</td></tr>
+<tr><td colspan="7">Columns</td></tr>
+        <tr>
+        <th>Name</th>
+        <th>Data Type</th>
+        <th>Nullable</th>
+        <th>PK</th>
+        <th>FK</th>
+        <th>Default</th>
+        <th>Comment</th>
+        </tr>
+<tr><td>antennaID</td><td>INT</td><td>Yes</td><td>Yes</td><td>No</td><td></td><td>This is the Unique Identifier for the antenna type. This is used to reduce redundancy</td></tr>
+<tr><td>antennaName</td><td>VARCHAR(5)</td><td>No</td><td>No</td><td>No</td><td></td><td>The name/type of antenna. e.g blade/whip</td></tr>
+</table><a href="#home">Table List </a></br>
+<a id="Signal Type"></a><table style="width:100%"><caption>Table: Signal Type </caption>
+<tr><td>Table Comments</td><td colspan="6">This contains different signal types (This table helps with normalisation)</td></tr>
+<tr><td colspan="7">Columns</td></tr>
+        <tr>
+        <th>Name</th>
+        <th>Data Type</th>
+        <th>Nullable</th>
+        <th>PK</th>
+        <th>FK</th>
+        <th>Default</th>
+        <th>Comment</th>
+        </tr>
+<tr><td>signalID</td><td>INT</td><td>Yes</td><td>Yes</td><td>No</td><td></td><td>This is the Unique Identifier for the signal. This is used to reduce redundancy.</td></tr>
+<tr><td>signalName</td><td>CHAR(4)</td><td>No</td><td>No</td><td>No</td><td></td><td>This is the 4 letter abbreviation of the signal type</td></tr>
+<tr><td>signalLowerThreshold</td><td>DECIMAL(5,2)</td><td>No</td><td>No</td><td>No</td><td></td><td>The lower threshold of the signal type</td></tr>
+<tr><td>signalHigherThreshold</td><td>DECIMAL(5,2)</td><td>No</td><td>No</td><td>No</td><td></td><td>The higher threshold of the signal type</td></tr>
+</table><a href="#home">Table List </a></br>
+<a id="Results"></a><table style="width:100%"><caption>Table: Results </caption>
+<tr><td>Table Comments</td><td colspan="6">This contains information about the different test results. It is more related to signal specifics, so that redundancy can be reduced in the Test Table</td></tr>
+<tr><td colspan="7">Columns</td></tr>
+        <tr>
+        <th>Name</th>
+        <th>Data Type</th>
+        <th>Nullable</th>
+        <th>PK</th>
+        <th>FK</th>
+        <th>Default</th>
+        <th>Comment</th>
+        </tr>
+<tr><td>resultID</td><td>INT</td><td>Yes</td><td>Yes</td><td>No</td><td></td><td>This is the Unique Identifier for the Test Result.</td></tr>
+<tr><td>antennaID</td><td>INT</td><td>Yes</td><td>No</td><td>Yes</td><td></td><td>This is the foreign Key Relating to the antenna used in the result</td></tr>
+<tr><td>networkID</td><td>INT</td><td>Yes</td><td>No</td><td>Yes</td><td></td><td>This is the foreign Key Relating to the network used in the result</td></tr>
+<tr><td>testID</td><td>INT</td><td>Yes</td><td>No</td><td>Yes</td><td></td><td>This is the foreign Key Relating to the parent test</td></tr>
+<tr><td>result</td><td>CHAR(4)</td><td>Yes</td><td>No</td><td>No</td><td></td><td>Indicates whether the result is a pass or a fail</td></tr>
+<tr><td>simCard</td><td>CHAR(20)</td><td>No</td><td>No</td><td>No</td><td></td><td>This is the slot for the simacard identifier. </td></tr>
+<tr><td>modemStatus</td><td>VARCHAR(45)</td><td>No</td><td>No</td><td>No</td><td></td><td>network status for the result (diagnostic for network connection)</td></tr>
+<tr><td>rawArray</td><td>VARCHAR(350)</td><td>No</td><td>No</td><td>No</td><td></td><td>Raw array of data for the Result</td></tr>
+<tr><td>networkReturn</td><td>VARCHAR(20)</td><td>No</td><td>No</td><td>No</td><td></td><td>Name of the network provider as returned during the test (Network Diagnostic)</td></tr>
+<tr><td>timeOut</td><td>TINYINT</td><td>Yes</td><td>No</td><td>No</td><td></td><td>Boolean value to indicate whether the connection timed out to the network.</td></tr>
+</table><a href="#home">Table List </a></br>
+<a id="Signal Results"></a><table style="width:100%"><caption>Table: Signal Results </caption>
+<tr><td>Table Comments</td><td colspan="6">This contains Results for specific signal types</td></tr>
+<tr><td colspan="7">Columns</td></tr>
+        <tr>
+        <th>Name</th>
+        <th>Data Type</th>
+        <th>Nullable</th>
+        <th>PK</th>
+        <th>FK</th>
+        <th>Default</th>
+        <th>Comment</th>
+        </tr>
+<tr><td>signalResultsID</td><td>INT</td><td>Yes</td><td>Yes</td><td>No</td><td></td><td>This is the Unique Identifier for the signalResult.</td></tr>
+<tr><td>signalID</td><td>INT</td><td>Yes</td><td>No</td><td>Yes</td><td></td><td>This is the foreign Key Relating to the signal type used in the test</td></tr>
+<tr><td>resultID</td><td>INT</td><td>Yes</td><td>No</td><td>Yes</td><td></td><td>This is the foreign Key Relating to the parent test result used in the test</td></tr>
+<tr><td>signalStrength</td><td>DECIMAL(16,13)</td><td>No</td><td>No</td><td>No</td><td></td><td>Decimal value outlining how strong the connection was to the specific network type</td></tr>
+</table><a href="#home">Table List </a></br>
+</body></html>

@@ -11,6 +11,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema AMSTestData
 -- -----------------------------------------------------
+DROP DATABASE AMSTestData;
 CREATE SCHEMA IF NOT EXISTS `AMSTestData` DEFAULT CHARACTER SET utf8 ;
 USE `AMSTestData` ;
 
@@ -77,10 +78,11 @@ CREATE TABLE IF NOT EXISTS `AMSTestData`.`Test` (
   `employeeID` INT NOT NULL COMMENT 'This is the foreign Key Relating to the employee used in the test',
   `testerID` INT NOT NULL COMMENT 'This is the foreign Key Relating to the tablet used in the test',
   `date` DATETIME NOT NULL COMMENT 'Date and Time of the Test',
-  `testType` VARCHAR(10) NULL,
+  `testType` VARCHAR(10) NULL COMMENT 'Production or test?',
   `antennaTestType` VARCHAR(17) NOT NULL COMMENT 'This data field confirms what antenna test type it is. ',
   `batteryLevel` DECIMAL(4,2) NULL COMMENT 'This field indicates the level of battery the meter has at the time of testing.',
-  `bluetoothsignal` VARCHAR(15) NULL COMMENT 'This indicates the level of bluetooth signal the Meter has to the Tablet at the test time',
+  `bluetoothSignal` VARCHAR(50) NULL COMMENT 'This indicates the level of bluetooth signal the Meter has to the Tablet at the test time',
+  `gen` INT NOT NULL COMMENT 'The generation of test it is',
   PRIMARY KEY (`testID`),
   INDEX `workOrder_idx` (`workOrder` ASC) VISIBLE,
   INDEX `meterID_idx` (`meterID` ASC) VISIBLE,
@@ -141,7 +143,6 @@ COMMENT = 'This table contains attributes about the different antennas used to p
 CREATE TABLE IF NOT EXISTS `AMSTestData`.`Signal Type` (
   `signalID` INT NOT NULL AUTO_INCREMENT COMMENT 'This is the Unique Identifier for the signal. This is used to reduce redundancy.',
   `signalName` CHAR(4) NULL COMMENT 'This is the 4 letter abbreviation of the signal type',
-  `Signal Typecol` VARCHAR(45) NULL,
   PRIMARY KEY (`signalID`),
   UNIQUE INDEX `signalID_UNIQUE` (`signalID` ASC) VISIBLE)
 ENGINE = InnoDB
@@ -159,7 +160,7 @@ CREATE TABLE IF NOT EXISTS `AMSTestData`.`Results` (
   `result` CHAR(4) NOT NULL COMMENT 'Indicates whether the result is a pass or a fail',
   `simCard` CHAR(20) NULL COMMENT 'This is the slot for the simacard identifier. ',
   `modemStatus` VARCHAR(45) NULL COMMENT 'network status for the result (diagnostic for network connection)',
-  `rawArray` VARCHAR(100) NULL COMMENT 'Raw array of data for the Result',
+  `rawArray` VARCHAR(350) NULL COMMENT 'Raw array of data for the Result',
   `networkReturn` VARCHAR(20) NULL COMMENT 'Name of the network provider as returned during the test (Network Diagnostic)',
   `timeOut` TINYINT NOT NULL COMMENT 'Boolean value to indicate whether the connection timed out to the network.',
   PRIMARY KEY (`resultID`),
